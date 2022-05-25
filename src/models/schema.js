@@ -1,0 +1,1 @@
+const databaseSchema = new
