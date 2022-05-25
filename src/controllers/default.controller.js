@@ -1,8 +1,4 @@
 
-const getAPI = (req, res)=>{
-    return res.status(200).json({
-        message: "Welcome to the default API"
-    });
+export const getAPI = (req, res)=>{
+    return res.json({"message": "The API is working"});
 }
-
-export default getAPI();

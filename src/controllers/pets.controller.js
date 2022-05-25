@@ -1,42 +1,88 @@
+import Pets from "./../models/petsSchema";
 
-const getPets = (req, res) => {
-  
+// Get requests
+const getPets = async (req, res) => {
+  try {
+    const pets = await Pets.findAll({
+      atributes: ["id", "name", "category", "photoUrl", "status"],
+    });
+    res.json(pets);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 }
 
-const getPet = (req, res) => {
-  console.log({"getPet": "todo anda bien"});
+const getPet = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const pet = await Pets.findOne({
+      where: {
+        id,
+      },
+    });
+    res.json(pet);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 }
 
-const postPet = (req, res) => {
-  const newPet = req.bodyParser;
-  console.log({"postPets": newPet});
+// Post request
+const postPet = async (req, res) => {
+  const { name, category, status, photoUrl } = req.body;
 
-  return res.json({"message":"Sí ando jalando pa"})
-  
+  const newPet = await Pets.create({
+    name,
+    category,
+    status,
+    photoUrl
+  });
+
+  console.log(newPet);
 }
 
-const putPet = (req, res) => {
+// Put request
+const putPet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, category, status, photoUrl } = req.body;
 
+    const pet = await Pets.findByPk(id);
+    pet.name = name;
+    pet.category = category;
+    pet.status = status;
+    pet.photoUrl = photoUrl;
+    await pet.save();
+
+    res.json(pet);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 }
 
-const deletePet = (req, res) => {
-
+// Delete request
+const deletePet = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Pets.destroy({
+      where: {
+        id,
+      },
+    });
+    return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 }
 
-const getPetByStatus = (req, res) => {
-
-}
-
-const postImagePet = (req, res) => {
-
-}
 
 export const methods = {
-    getPets,
-    getPet,
-    postPet,
-    putPet,
-    deletePet,
-    getPetByStatus,
-    postImagePet
+  getPets,
+  getPet,
+  postPet,
+  putPet,
+  deletePet,
 };

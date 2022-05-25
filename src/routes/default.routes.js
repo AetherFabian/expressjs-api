@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { methods as defaultController } from "../controllers/default.controller";
+import { getAPI } from "../controllers/default.controller";
 
 const router = Router();
 
-router.get("/", defaultController.getAPI);
+router.get("/", getAPI);
 
 export default router;

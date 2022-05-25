@@ -1,33 +1,26 @@
-import databaseService from "./../database/database";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../database/database';
 
-console.log(knex.select().from('pets').timeout(1000))
+const Pets = sequelize.define('pets', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    category:{
+        type: DataTypes.STRING
+    },
+    name:{
+        type: DataTypes.STRING
+    },
+    photoUrl:{
+        type: DataTypes.STRING
+    },
+    status:{
+        type: DataTypes.STRING,
+        defaultValue: 'available'
+    }},{
+    timestamps: false
+});
 
-const ifTableExists = async () => {
-    let tableExists = knex.select().from('pets').timeout(1000)
-    console.log(tableExists);
-    if (!tableExists) {
-        createTable()
-        return true
-    }
-    else {
-        return true
-    }
-}
-
-const createTable = async () => {
-    const schema = petsSchema()
-    await databaseService.query(`create table pets (${schema}`)
-}
-
-const petsSchema = () => {
-    databaseService.createSchema("pets", {
-        name: {
-            type: String,
-            required: true
-        },
-        type: {
-            type: String,
-            required: true
-        },
-    });
-}
+export default Pets;

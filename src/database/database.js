@@ -1,14 +1,7 @@
-import config from "./../config";
+import Sequelize from "sequelize";
+import config from "../config";
 
-    const databaseService = require("knex")({
-        client: "mysql",
-        connection: {
-            host: config.host,
-            port: 3306,
-            database: config.database,
-            user: config.user,
-            password: config.password,
-        },
-    });
-
-export default databaseService;
+export const sequelize = new Sequelize(config.database, config.user, config.password,{
+    host: config.host,
+    dialect: 'postgres'
+});
